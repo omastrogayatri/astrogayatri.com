@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: flask-hello
+    runtime: python
+    buildCommand: ""
+    startCommand: "python hello.py"
+    envVars:
+      - key: PORT
+        value: 10000
