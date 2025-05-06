@@ -1,13 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dynamic Location Selector</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta charset="UTF-8">
+  <title>AstroGayatri - AI Kundali Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', sans-serif;
+      background: url('https://images.unsplash.com/photo-1505678261036-a3fcc5e884ee?fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.75);
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 40px;
+      border-radius: 15px;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #FFD700;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+    input[type="submit"] {
+      margin-top: 25px;
+      background-color: #FFD700;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    input[type="submit"]:hover {
+      background-color: #FFA500;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #ccc;
+    }
+  </style>
 </head>
 <body>
-    <h2>Select Location</h2>
-    <form action="/submit" method="post">
-        <label for="country">Country:</label>
+  <div class="container">
+    <h1>AstroGayatri</h1>
+    <p><strong>Welcome to AstroGayatri</strong>, where ancient Vedic wisdom meets modern artificial intelligence. Our AI-powered Janm Kundali generator uses cutting-edge Generative AI (GenAI), built on the powerful Mistral model, GenAI model has been enriched with traditional astrological texts. Simply enter your birth details and let our system analyze planetary positions to create a personalized horoscope interpretation.</p>
+    
+    <form action="/submit" method="POST">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="dob" required>
+
+      <label for="tob">Time of Birth:</label>
+      <input type="time" id="tob" name="tob" required>
+
+      <label for="location">Place of Birth:</label>
+      <input type="text" id="location" name="location" required>
+	  
+	  <label for="country">Country:</label>
         <select id="country" name="country">
             <option value="">Select Country</option>
             <option value="India">India</option>
@@ -24,8 +100,9 @@
             <option value="">Select City</option>
         </select>
 
-        <button type="submit">Submit</button>
+      <input type="submit" value="Generate My Kundali">
     </form>
+  </div>
 
     <script>
         $('#country').change(function() {
@@ -49,5 +126,8 @@
             });
         });
     </script>
+  <footer>
+    Powered by Hugging Face Mistral | © 2025 AstroGayatri
+  </footer>
 </body>
 </html>
