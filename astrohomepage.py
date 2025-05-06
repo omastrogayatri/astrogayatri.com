@@ -7,7 +7,7 @@ app = Flask(__name__)
 # Load CSV data into nested dict structure
 locations = defaultdict(lambda: defaultdict(set))
 
-with open('locations.csv', newline='', encoding='utf-8') as csvfile:
+with open('data/locations.csv', newline='', encoding='utf-8') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         country = row['country']
