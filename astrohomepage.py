@@ -1,13 +1,21 @@
 from flask import Flask, render_template, request, jsonify
 import csv
 from collections import defaultdict
+import requests
+from skyfield.api import load, Topos
+from timezonefinder import TimezoneFinder
+from datetime import datetime
+import pytz
 
 app = Flask(__name__)
+
+if __name__ == "__main__":
+   app.run(debug=True)
 
 # Load CSV data into nested dict structure
 locations = defaultdict(lambda: defaultdict(set))
 
-with open('data/locations.csv', newline='', encoding='utf-8') as csvfile:
+with open('C:\\Users\\a33\\Desktop\\Personal\\Astro\\code\\data\\locations.csv', newline='', encoding='utf-8') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         country = row['country']
@@ -38,22 +46,79 @@ def get_cities():
             return jsonify(country_data[state])
     return jsonify([])
 
+def get_zodiac_sign(ecl_lon_deg):
+    ZODIAC_SIGNS = [
+    "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
+    "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+]
+    return ZODIAC_SIGNS[int(ecl_lon_deg // 30)]
+
 @app.route('/submit', methods=['POST'])
 def submit():
+    
     name = request.form['name']
     dob = request.form['dob']
     tob = request.form['tob']
-    location = request.form['location']
+    country = request.form['country']
+    state = request.form['state']
+    city = request.form['city']
 
     # Compose input for LLM
-    birth_details = f"Name: {name}, DOB: {dob}, Time: {tob}, Location: {location}"
+
+    #get latitude, longitude
+
+    url = f"https://nominatim.openstreetmap.org/search"
+    params = {
+        'q': f"{city}, {state}, {country}",
+        'format': 'json',
+        'limit': 1
+    }
+    headers = {'User-Agent': 'kundali-app'}
+    response = requests.get(url, params=params, headers=headers)
+    data = response.json()
+    if not data:
+        raise Exception("Location not found.")
+    lat = float(data[0]['lat'])
+    lon = float(data[0]['lon'])
+   
+  # timezone finder
+    tf = TimezoneFinder()
+    tz_name = tf.timezone_at(lat=lat, lng=lon)
+    dt_naive = datetime.strptime(f"{dob} {tob}", "%Y-%m-%d %H:%M")
+    tz = pytz.timezone(tz_name)
+    dt_local = tz.localize(dt_naive)
+    dt_utc = dt_local.astimezone(pytz.utc)
+
+
+    planets = load('de421.bsp')
+    ts = load.timescale()
+    t = ts.utc(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour, dt_utc.minute)
+
+    observer = Topos(latitude_degrees=lat, longitude_degrees=lon)
+    earth = planets['earth']
+
+    print(f"\nKundali for {name} in {city}, {state}, {country}")
+    print(f"Local Time: {dt_local} | UTC: {dt_utc}")
+    print("-" * 60)
+    print(f"{'Planet':<10} {'Longitude (°)':<15} {'Zodiac Sign':<10}")
+    print("-" * 60)
+
+    for planet_name in ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn']:
+        body = planets[planet_name]
+        astrometric = (earth + observer).at(t).observe(body).apparent()
+        ecliptic = astrometric.ecliptic_latlon()
+        lon_deg = ecliptic[1].degrees
+        sign = get_zodiac_sign(lon_deg)
+        print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")
+
+     #birth_details = f"Name: {name}, DOB: {dob}, Time: {tob}, Location: {location}"
 
     # Call Hugging Face Mistral model via API (assume hosted version)
-    response = requests.post(
-        "https://api-inference.huggingface.co/models/your-username/mistral-kundali",
-        headers={"Authorization": f"Bearer YOUR_HUGGINGFACE_API_TOKEN"},
-        json={"inputs": f"Generate a detailed Vedic kundali interpretation for: {birth_details}"}
-    )
+   # response = requests.post(
+    #    "https://api-inference.huggingface.co/models/your-username/mistral-kundali",
+     #   headers={"Authorization": f"Bearer YOUR_HUGGINGFACE_API_TOKEN"},
+      #  json={"inputs": f"Generate a detailed Vedic kundali interpretation for: {birth_details}"}
+    #) 
 
-    result = response.json()[0]["generated_text"]
-    return f"<h2>Your Kundali:</h2><pre>{result}</pre>"
+    #result = response.json()[0]["generated_text"]
+    #return f"<h2>Your Kundali:</h2><pre>{result}</pre>"
