@@ -90,7 +90,7 @@ def submit():
     dt_utc = dt_local.astimezone(pytz.utc)
 
 
-    planets = load('de440.bsp')
+    planets = load('de421.bsp')
     ts = load.timescale()
     t = ts.utc(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour, dt_utc.minute)
 
@@ -102,14 +102,29 @@ def submit():
     print("-" * 60)
     print(f"{'Planet':<10} {'Longitude (°)':<15} {'Zodiac Sign':<10}")
     print("-" * 60)
+    
+    
+    # Map of planet names to NAIF IDs (matching de421.bsp)
+    planet_ids = {
+    'Sun': 10,
+    'Moon': 301,
+    'Mercury': 199,
+    'Venus': 299,
+    'Mars': 499,
+    'Jupiter': 599,
+    'Saturn': 699
+    }
 
     for planet_name in ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn']:
-        body = planets[planet_name]
+    try:
+        body = planets[planet_ids[name]]
         astrometric = (earth + observer).at(t).observe(body).apparent()
         ecliptic = astrometric.ecliptic_latlon()
         lon_deg = ecliptic[1].degrees
         sign = get_zodiac_sign(lon_deg)
-        print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")
+        print(f"{name:<10} {lon_deg:<15.2f} {sign:<10}")
+    except KeyError:
+        print(f"{name:<10} {'N/A':<15} {'Not in kernel':<10}")
 
      #birth_details = f"Name: {name}, DOB: {dob}, Time: {tob}, Location: {location}"
 
