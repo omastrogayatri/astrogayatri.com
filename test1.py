@@ -1,10 +1,7 @@
-from flask import Flask
+from skyfield.api import load
 
-app = Flask(__name__)
+planets = load('de440s.bsp')  # or your full path
 
-@app.route('/')
-def home():
-    return "<h1>Hello from Flask!</h1>"
-
-if __name__ == "__main__":
-    app.run(debug=True)
+print("Available targets in the kernel:")
+for target in planets.names():
+    print(target)
