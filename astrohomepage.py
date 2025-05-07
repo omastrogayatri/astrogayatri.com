@@ -90,7 +90,7 @@ def submit():
     dt_utc = dt_local.astimezone(pytz.utc)
 
 
-    planets = load('de421.bsp')
+    planets = load('de440.bsp')
     ts = load.timescale()
     t = ts.utc(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour, dt_utc.minute)
 
