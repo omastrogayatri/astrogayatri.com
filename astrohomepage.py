@@ -6,6 +6,8 @@ from skyfield.api import load, Topos
 from timezonefinder import TimezoneFinder
 from datetime import datetime
 import pytz
+import os
+import urllib.request
 
 app = Flask(__name__)
 
@@ -88,9 +90,17 @@ def submit():
     tz = pytz.timezone(tz_name)
     dt_local = tz.localize(dt_naive)
     dt_utc = dt_local.astimezone(pytz.utc)
+    BSP_FILE = 'de440.bsp'
+    BSP_URL = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp'
+
+# Download if file is missing
+    if not os.path.exists(BSP_FILE):
+    print("Downloading de440.bsp (114 MB)...")
+    urllib.request.urlretrieve(BSP_URL, BSP_FILE)
+    print("Download complete.")
 
 
-    planets = load('de440.bsp')
+    planets = load(BSP_FILE)
     ts = load.timescale()
     t = ts.utc(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour, dt_utc.minute)
 
