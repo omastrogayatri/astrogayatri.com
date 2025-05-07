@@ -116,14 +116,14 @@ def submit():
     }
 
     for planet_name in ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn']:
-    try:
+     try:
         body = planets[planet_ids[name]]
         astrometric = (earth + observer).at(t).observe(body).apparent()
         ecliptic = astrometric.ecliptic_latlon()
         lon_deg = ecliptic[1].degrees
         sign = get_zodiac_sign(lon_deg)
         print(f"{name:<10} {lon_deg:<15.2f} {sign:<10}")
-    except KeyError:
+     except KeyError:
         print(f"{name:<10} {'N/A':<15} {'Not in kernel':<10}")
 
      #birth_details = f"Name: {name}, DOB: {dob}, Time: {tob}, Location: {location}"
