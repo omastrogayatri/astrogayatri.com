@@ -15,7 +15,7 @@ if __name__ == "__main__":
 # Load CSV data into nested dict structure
 locations = defaultdict(lambda: defaultdict(set))
 
-with open('C:\\Users\\a33\\Desktop\\Personal\\Astro\\code\\data\\locations.csv', newline='', encoding='utf-8') as csvfile:
+with open('locations.csv', newline='', encoding='utf-8') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         country = row['country']
