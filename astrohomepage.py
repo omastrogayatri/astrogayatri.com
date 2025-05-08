@@ -95,9 +95,9 @@ def submit():
 
 # Download if file is missing
     if not os.path.exists(BSP_FILE):
-    print("Downloading de440.bsp (114 MB)...")
-    urllib.request.urlretrieve(BSP_URL, BSP_FILE)
-    print("Download complete.")
+     print("Downloading de440.bsp (114 MB)...")
+     urllib.request.urlretrieve(BSP_URL, BSP_FILE)
+     print("Download complete.")
 
 
     planets = load(BSP_FILE)
