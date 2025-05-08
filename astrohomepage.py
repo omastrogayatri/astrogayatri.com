@@ -90,22 +90,33 @@ def submit():
     tz = pytz.timezone(tz_name)
     dt_local = tz.localize(dt_naive)
     dt_utc = dt_local.astimezone(pytz.utc)
-    BSP_FILE = 'de421.bsp'
-    BSP_URL = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/de421.bsp'
+    BSP_FILE1 = 'de421.bsp'
+    BSP_URL1 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/de421.bsp'
+    BSP_FILE2 = 'sat441.bsp'
+    BSP_URL2 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat441.bsp'
+    BSP_FILE3 = 'jup365.bsp'
+    BSP_URL3 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup365.bsp'
 
 # Download if file is missing
-    if not os.path.exists(BSP_FILE):
+    if not os.path.exists(BSP_FILE1):
      print("Downloading de421.bsp")
-     urllib.request.urlretrieve(BSP_URL, BSP_FILE)
+     urllib.request.urlretrieve(BSP_URL1, BSP_FILE1)
      print("Download complete.")
-     planets = load(BSP_FILE)
-    else:
-     planets = load(BSP_FILE)
-     bsp_path = planets.path
-     size_mb = os.path.getsize(bsp_path) / (1024 * 1024)
-     print(f"BSP file path: {bsp_path}")
-     print(f"BSP file size: {size_mb:.2f} MB")
 
+    if not os.path.exists(BSP_FILE2):
+     print("Downloading sat441.bsp")
+     urllib.request.urlretrieve(BSP_URL2, BSP_FILE2)
+     print("Download complete.")
+
+    if not os.path.exists(BSP_FILE3):
+     print("Downloading jup365.bsp")
+     urllib.request.urlretrieve(BSP_URL3, BSP_FILE3)
+     print("Download complete.")
+     
+    
+
+
+    planets = load(BSP_FILE1,BSP_FILE3,BSP_FILE3)
 
     ts = load.timescale()
     t = ts.utc(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour, dt_utc.minute)
