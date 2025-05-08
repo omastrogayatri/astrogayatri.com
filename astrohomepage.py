@@ -90,12 +90,12 @@ def submit():
     tz = pytz.timezone(tz_name)
     dt_local = tz.localize(dt_naive)
     dt_utc = dt_local.astimezone(pytz.utc)
-    BSP_FILE = 'de441.bsp'
-    BSP_URL = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de441.bsp'
+    BSP_FILE = 'de421.bsp'
+    BSP_URL = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/de421.bsp'
 
 # Download if file is missing
     if not os.path.exists(BSP_FILE):
-     print("Downloading de441.bsp")
+     print("Downloading de421.bsp")
      urllib.request.urlretrieve(BSP_URL, BSP_FILE)
      print("Download complete.")
      planets = load(BSP_FILE)
