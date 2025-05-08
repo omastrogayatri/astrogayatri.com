@@ -98,9 +98,15 @@ def submit():
      print("Downloading de440.bsp (114 MB)...")
      urllib.request.urlretrieve(BSP_URL, BSP_FILE)
      print("Download complete.")
+     planets = load(BSP_FILE)
+    else:
+     planets = load(BSP_FILE)
+     bsp_path = planets.path
+     size_mb = os.path.getsize(bsp_path) / (1024 * 1024)
+     print(f"BSP file path: {bsp_path}")
+     print(f"BSP file size: {size_mb:.2f} MB")
 
 
-    planets = load(BSP_FILE)
     ts = load.timescale()
     t = ts.utc(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour, dt_utc.minute)
 
