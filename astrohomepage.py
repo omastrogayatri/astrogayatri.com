@@ -92,10 +92,10 @@ def submit():
     dt_utc = dt_local.astimezone(pytz.utc)
     BSP_FILE1 = 'de421.bsp'
     BSP_URL1 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/de421.bsp'
-    BSP_FILE2 = 'sat441.bsp'
-    BSP_URL2 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat441.bsp'
-    BSP_FILE3 = 'jup365.bsp'
-    BSP_URL3 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup365.bsp'
+    BSP_FILE2 = 'sat454.bsp'
+    BSP_URL2 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat454.bsp'
+    BSP_FILE3 = 'jup344.bsp'
+    BSP_URL3 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup344.bsp'
 
 # Download if file is missing
     if not os.path.exists(BSP_FILE1):
@@ -104,12 +104,12 @@ def submit():
      print("Download complete.")
 
     if not os.path.exists(BSP_FILE2):
-     print("Downloading sat441.bsp")
+     print("Downloading sat454.bsp")
      urllib.request.urlretrieve(BSP_URL2, BSP_FILE2)
      print("Download complete.")
 
     if not os.path.exists(BSP_FILE3):
-     print("Downloading jup365.bsp")
+     print("Downloading jup344.bsp")
      urllib.request.urlretrieve(BSP_URL3, BSP_FILE3)
      print("Download complete.")
      
