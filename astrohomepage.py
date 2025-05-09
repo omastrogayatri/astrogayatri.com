@@ -116,7 +116,9 @@ def submit():
     
 
 
-    planets = load(BSP_FILE1,BSP_FILE2,BSP_FILE3)
+    planets = load(BSP_FILE1)
+    satplanet = load('sat361.bsp')
+    jupplanet = load('jup329.bsp')
 
     ts = load.timescale()
     t = ts.utc(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour, dt_utc.minute)
@@ -144,14 +146,29 @@ def submit():
 
     for planet_name in ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn']:
      try:
-        body = planets[planet_ids[planet_name]]
-        astrometric = (earth + observer).at(t).observe(body).apparent()
-        ecliptic = astrometric.ecliptic_latlon()
-        lon_deg = ecliptic[1].degrees
-        sign = get_zodiac_sign(lon_deg)
-        print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")
+        if planet_name in ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars']:
+           body = planets[planet_ids[planet_name]]
+           astrometric = (earth + observer).at(t).observe(body).apparent()
+           ecliptic = astrometric.ecliptic_latlon()
+           lon_deg = ecliptic[1].degrees
+           sign = get_zodiac_sign(lon_deg)
+           print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")
+        if planet_name in ['Jupiter']:
+            body = jupplanet[planet_ids[planet_name]]
+            astrometric = (earth + observer).at(t).observe(body).apparent()
+            ecliptic = astrometric.ecliptic_latlon()
+            lon_deg = ecliptic[1].degrees
+            sign = get_zodiac_sign(lon_deg)
+            print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")
+        if planet_name in ['Saturn']:
+            body = satplanet[planet_ids[planet_name]]
+            astrometric = (earth + observer).at(t).observe(body).apparent()
+            ecliptic = astrometric.ecliptic_latlon()
+            lon_deg = ecliptic[1].degrees
+            sign = get_zodiac_sign(lon_deg)
+            print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")         
      except KeyError:
-        print(f"{planet_name:<10} {'N/A':<15} {'Not in kernel':<10}")
+      print(f"{planet_name:<10} {'N/A':<15} {'Not in kernel':<10}")
 
      #birth_details = f"Name: {name}, DOB: {dob}, Time: {tob}, Location: {location}"
 

@@ -1,5 +1,4 @@
-from skyfield.api import Loader
-load = Loader('~/skyfield-data')
-planets = load('C:\\Users\\a33\\skyfield-data\\de440.bsp')
+from skyfield.api import load
+planets = load('de421.bsp')
 print("Loaded planets:", planets.names())
 print(planets.filename)
