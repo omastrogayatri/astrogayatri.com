@@ -205,8 +205,8 @@ def submit():
 # Loop to print the key and values
     for key, value in eph.items():
      print(f"Key: {key}")
-    for sub_key, sub_value in value.items():
-     print(f"  {sub_key}: {sub_value}")
+     for sub_key, sub_value in value.items():
+      print(f"  {sub_key}: {sub_value}")
 
      #birth_details = f"Name: {name}, DOB: {dob}, Time: {tob}, Location: {location}"
 
