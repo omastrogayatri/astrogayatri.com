@@ -3,6 +3,8 @@ import csv
 from collections import defaultdict
 import requests
 from skyfield.api import load, Topos
+from skyfield.positionlib import ICRF
+from skyfield.almanac import ecliptic_position
 from timezonefinder import TimezoneFinder
 from datetime import datetime
 import pytz
@@ -57,7 +59,13 @@ def get_zodiac_sign(ecl_lon_deg):
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    
+    BSP_FILE1 = 'de421.bsp'
+    #BSP_URL1 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/de421.bsp'
+    BSP_FILE2 = 'sat361.bsp'
+    #BSP_URL2 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/a_old_versions/sat361.bsp'
+    BSP_FILE3 = 'jup329.bsp'
+    BSP_URL3 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/a_old_versions/jup329.bsp'
+
     name = request.form['name']
     dob = request.form['dob']
     tob = request.form['tob']
@@ -83,19 +91,15 @@ def submit():
     lat = float(data[0]['lat'])
     lon = float(data[0]['lon'])
    
-  # timezone finder
+    # Determine timezone using timezonefinder
     tf = TimezoneFinder()
     tz_name = tf.timezone_at(lat=lat, lng=lon)
-    dt_naive = datetime.strptime(f"{dob} {tob}", "%Y-%m-%d %H:%M")
     tz = pytz.timezone(tz_name)
+    # Create datetime object for birth time
+    dt_naive = datetime.strptime(f"{dob} {tob}", "%Y-%m-%d %H:%M")
     dt_local = tz.localize(dt_naive)
     dt_utc = dt_local.astimezone(pytz.utc)
-    BSP_FILE1 = 'de421.bsp'
-    #BSP_URL1 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/de421.bsp'
-    BSP_FILE2 = 'sat361.bsp'
-    #BSP_URL2 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/a_old_versions/sat361.bsp'
-    BSP_FILE3 = 'jup329.bsp'
-    BSP_URL3 = 'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/a_old_versions/jup329.bsp'
+
 
 # Download if file is missing
     #if not os.path.exists(BSP_FILE1):
@@ -112,9 +116,6 @@ def submit():
       print("Downloading jup329.bsp")
       urllib.request.urlretrieve(BSP_URL3, BSP_FILE3)
       print("Download complete.")
-     
-    
-
 
     planets = load(BSP_FILE1)
     satplanet = load('sat361.bsp')
@@ -143,32 +144,69 @@ def submit():
     'Jupiter': 599,
     'Saturn': 699
     }
-
-    for planet_name in ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn']:
+    ayanamsa = 23.85675
+    eph = {}
+    for planet_name in ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn','RahuKetu']:
      try:
         if planet_name in ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars']:
-           body = planets[planet_ids[planet_name]]
-           astrometric = (earth + observer).at(t).observe(body).apparent()
-           ecliptic = astrometric.ecliptic_latlon()
-           lon_deg = ecliptic[1].degrees
-           sign = get_zodiac_sign(lon_deg)
-           print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")
+            body = planets[planet_ids[planet_name]]
+            astrometric = (earth + observer).at(t).observe(body).apparent()
+            ecliptic = astrometric.ecliptic_latlon()
+            lon_deg = ecliptic[1].degrees
+            sidereal_lon = (lon_deg - ayanamsa) % 360
+            sign = get_zodiac_sign(sidereal_lon)
+            eph[planet_name] = { "Longitude": lon_deg, "Sign": sign }
+            print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")
         if planet_name in ['Jupiter']:
             body = jupplanet[planet_ids[planet_name]]
             astrometric = (earth + observer).at(t).observe(body).apparent()
             ecliptic = astrometric.ecliptic_latlon()
             lon_deg = ecliptic[1].degrees
-            sign = get_zodiac_sign(lon_deg)
+            sidereal_lon = (lon_deg - ayanamsa) % 360
+            sign = get_zodiac_sign(sidereal_lon)
+            eph[planet_name] = { "Longitude": lon_deg, "Sign": sign }
             print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")
         if planet_name in ['Saturn']:
             body = satplanet[planet_ids[planet_name]]
             astrometric = (earth + observer).at(t).observe(body).apparent()
             ecliptic = astrometric.ecliptic_latlon()
             lon_deg = ecliptic[1].degrees
-            sign = get_zodiac_sign(lon_deg)
-            print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")         
+            sidereal_lon = (lon_deg - ayanamsa) % 360
+            sign = get_zodiac_sign(sidereal_lon)
+            eph[planet_name] = { "Longitude": lon_deg, "Sign": sign }
+            print(f"{planet_name:<10} {lon_deg:<15.2f} {sign:<10}")    
+        if planet_name in ['RahuKetu']:
+            body = planets[planet_ids['Moon']]
+            astrometric = (earth + observer).at(t).observe(body)
+            ecliptic = astrometric.ecliptic_latlon()
+            lon_deg = ecliptic[1].degrees
+            rahu = (lon_deg + 180.0) % 360
+            ketu = lon_deg
+            rahusiderl_lon = (rahu - ayanamsa) % 360
+            ketusiderl_lon = (ketu - ayanamsa) % 360
+            rahusign = get_zodiac_sign(rahusiderl_lon)
+            ketusign = get_zodiac_sign(ketusiderl_lon)
+
+            eph['Rahu'] = { "Longitude": rahusiderl_lon, "Sign": rahusign }
+            print(f"{"Rahu"} {rahusiderl_lon:<15.2f} {rahusign:<10}")      
+
+            eph['Ketu'] = { "Longitude": ketusiderl_lon, "Sign": ketusign }
+            print(f"{"Ketu"} {ketusiderl_lon:<15.2f} {ketusign:<10}")  
      except KeyError:
       print(f"{planet_name:<10} {'N/A':<15} {'Not in kernel':<10}")
+
+    # Compute Lagna (Ascendant)
+
+    gast = t.gast  # Greenwich Apparent Sidereal Time
+    lagna = (gast * 15 + lon) % 360  # Simplified calculation
+    eph['Lagna'] = { "Longitude": lagna }
+
+
+# Loop to print the key and values
+    for key, value in eph.items():
+     print(f"Key: {key}")
+    for sub_key, sub_value in value.items():
+     print(f"  {sub_key}: {sub_value}")
 
      #birth_details = f"Name: {name}, DOB: {dob}, Time: {tob}, Location: {location}"
 
