@@ -208,6 +208,44 @@ def submit():
      for sub_key, sub_value in value.items():
       print(f"  {sub_key}: {sub_value}")
 
+    #Together AI call
+    TOGETHER_API_KEY = "your_together_api_key_here"
+    TOGETHER_MODEL = "mistralai/Mixtral-8x7B-Instruct-v0.1"  # You can change model
+ 
+    
+
+#def generate_kundali_from_api(name, dob, time, location, eph_data):
+    prompt = f"""
+    Generate a detailed Janm Kundali in traditional Vedic astrology style for:
+    Name: {name}
+    Date of Birth: {dob}
+    Time of Birth: {tob}
+    Place of Birth: {city}, {state}, {country}
+    Planetary data: {eph}
+
+    Please include general personality, strengths, career, marriage, health, challenges, and planetary effects.
+    """
+
+    headers = {
+        "Authorization": f"Bearer {TOGETHER_API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "model": TOGETHER_MODEL,
+        "prompt": prompt,
+        "max_tokens": 600,
+        "temperature": 0.7
+    }
+
+    response = requests.post("https://api.together.xyz/v1/completions", headers=headers, json=data)
+    if response.status_code == 200:
+        kundali_text = response.json()['choices'][0]['text'].strip()
+        return render_template('kundali.html', kundali=kundali_text)
+    else:
+        return f"Error: {response.text}"
+
+
      #birth_details = f"Name: {name}, DOB: {dob}, Time: {tob}, Location: {location}"
 
     # Call Hugging Face Mistral model via API (assume hosted version)
