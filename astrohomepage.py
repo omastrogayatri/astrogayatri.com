@@ -188,10 +188,10 @@ def submit():
             ketusign = get_zodiac_sign(ketusiderl_lon)
 
             eph['Rahu'] = { "Longitude": rahusiderl_lon, "Sign": rahusign }
-            print(f"{"Rahu"} {rahusiderl_lon:<15.2f} {rahusign:<10}")      
+            print(f"Rahu: {rahusiderl_lon:<15.2f} {rahusign:<10}")      
 
             eph['Ketu'] = { "Longitude": ketusiderl_lon, "Sign": ketusign }
-            print(f"{"Ketu"} {ketusiderl_lon:<15.2f} {ketusign:<10}")  
+            print(f"Ketu: {ketusiderl_lon:<15.2f} {ketusign:<10}")  
      except KeyError:
       print(f"{planet_name:<10} {'N/A':<15} {'Not in kernel':<10}")
 
