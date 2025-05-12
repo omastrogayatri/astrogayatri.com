@@ -4,7 +4,7 @@ from collections import defaultdict
 import requests
 from skyfield.api import load, Topos
 from skyfield.positionlib import ICRF
-from skyfield.almanac import ecliptic_position
+#from skyfield.almanac import ecliptic_position
 from timezonefinder import TimezoneFinder
 from datetime import datetime
 import pytz
