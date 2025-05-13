@@ -1,2 +1,59 @@
-<h2>Your Janm Kundali</h2>
-<pre>{{ kundali }}</pre>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Janm Kundali</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Georgia", serif;
+            background-image: url('/static/old-paper-bg.jpeg'); /* You must place the image in /static */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            color: #3e2f1c;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: rgba(255, 255, 255, 0.85); /* translucent old-paper effect */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            overflow-y: auto;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .kundali-text {
+            white-space: pre-wrap; /* allows line breaks and wraps long lines */
+            word-wrap: break-word;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Janm Kundali</h2>
+        <div class="kundali-text">
+            {{ kundali }}
+        </div>
+    </div>
+</body>
+</html>
