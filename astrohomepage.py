@@ -234,7 +234,7 @@ def submit():
     data = {
         "model": TOGETHER_MODEL,
         "prompt": prompt,
-        "max_tokens": 600,
+        "max_tokens": 2048,
         "temperature": 0.7
     }
 
