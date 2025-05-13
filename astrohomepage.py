@@ -238,7 +238,7 @@ def submit():
         "temperature": 0.7
     }
 
-    response = requests.post("https://api.together.xyz/v1/completions", headers=headers, json=data)
+    response = requests.post("https://api.together.xyz/v1/completions", headers=headers, json=data, timeout=120)
     if response.status_code == 200:
         kundali_text = response.json()['choices'][0]['text'].strip()
         return render_template('kundali.html', kundali=kundali_text)
