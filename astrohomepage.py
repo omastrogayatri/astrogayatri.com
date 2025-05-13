@@ -223,7 +223,7 @@ def submit():
     Place of Birth: {city}, {state}, {country}
     Planetary data: {eph}
 
-    Please include general personality, strengths, career, marriage, health, challenges, and planetary effects.
+    Please include Detailed Janm Kundali with personality, strengths, career, marriage, health, challenges, and each planetary effects in the report.
     """
 
     headers = {
