@@ -223,7 +223,7 @@ def submit():
     Place of Birth: {city}, {state}, {country}
     Planetary data: {eph}
 
-    Please include Detailed Janm Kundali(within 1500 tokens) with Rashi, Ascendant, each planetary effects, overall personality impact with strengths/weaknesses, career, marriage, health, relationships  in the report.
+    Please include Detailed Janm Kundali(within 1500 tokens) with Rashi, Ascendant, each planetary effects, overall personality impact with strengths/weaknesses, career, wealth, marriage, health, relationships  in the report.
     """
 
     headers = {
