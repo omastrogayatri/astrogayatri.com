@@ -216,7 +216,7 @@ def submit():
 
 #def generate_kundali_from_api(name, dob, time, location, eph_data):
     prompt = f"""
-    Generate a detailed Janm Kundali in traditional Vedic astrology style for:
+    Generate a detailed and professional Janm Kundali in traditional Vedic astrology style for:
     Name: {name}
     Date of Birth: {dob}
     Time of Birth: {tob}
