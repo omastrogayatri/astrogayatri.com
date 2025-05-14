@@ -216,14 +216,35 @@ def submit():
 
 #def generate_kundali_from_api(name, dob, time, location, eph_data):
     prompt = f"""
-    Generate a detailed and professional Janm Kundali in traditional Vedic astrology style for:
+    Generate a detailed and professional Janm Kundali in traditional Vedic astrology style for below (make sure to use planetary data provided as an input):
     Name: {name}
     Date of Birth: {dob}
     Time of Birth: {tob}
     Place of Birth: {city}, {state}, {country}
     Planetary data: {eph}
 
-    Please include Detailed Janm Kundali(within 1500 tokens) with Rashi, Ascendant, each planetary effects, overall personality impact with strengths/weaknesses, career, wealth, marriage, health, relationships  in the report.
+    Please include Detailed Janm Kundali(within 1500 tokens) with Rashi, Ascendant, each planetary effects, overall 
+    personality impact with strengths/weaknesses, career, wealth, marriage, health, relationships  in the report. Sample format is :
+
+                                      Janm Kundali for SSSS
+    Name : SSSS, Date of Birth : DDDD, Time of Birth : HH:MM:SS, Place of Birth : City, State, Country
+    Rashi : XXX
+    Ascendant : YYY
+
+    Persoanlity : 10-15 lines highlighting personality
+
+    Career : 3-4 lines
+
+    Wealth : 5-6 lines
+
+    Relationship : 5-6 lines of relationship with Parents, Siblings, Children and friends
+
+    Marriage : 4-5 lines about marital life and tendency
+
+    Health : 3-4 lines about health
+
+    Planetary effects : 3-4 lines about impact of each planet on life of the person.
+
     """
 
     headers = {
@@ -235,7 +256,7 @@ def submit():
         "model": TOGETHER_MODEL,
         "prompt": prompt,
         "max_tokens": 2048,
-        "temperature": 0.7
+        "temperature": 0.4
     }
 
     response = requests.post("https://api.together.xyz/v1/completions", headers=headers, json=data, timeout=120)
