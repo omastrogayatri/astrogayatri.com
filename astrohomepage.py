@@ -230,21 +230,13 @@ def submit():
     Name : SSSS, Date of Birth : DDDD, Time of Birth : HH:MM:SS, Place of Birth : City, State, Country
     Rashi : XXX
     Ascendant : YYY
-
-    Persoanlity : 10-15 lines highlighting personality
-
+    Persoanlity : 10-15 lines highlighting personality 
     Career : 3-4 lines
-
     Wealth : 5-6 lines
-
     Relationship : 5-6 lines of relationship with Parents, Siblings, Children and friends
-
     Marriage : 4-5 lines about marital life and tendency
-
     Health : 3-4 lines about health
-
     Planetary effects : 3-4 lines about impact of each planet on life of the person.
-
     """
 
     headers = {
