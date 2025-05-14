@@ -224,19 +224,7 @@ def submit():
     Planetary data: {eph}
 
     Please include Detailed Janm Kundali(within 1500 tokens) with Rashi, Ascendant, each planetary effects, overall 
-    personality impact with strengths/weaknesses, career, wealth, marriage, health, relationships  in the report. Sample format is :
-
-                                      Janm Kundali for SSSS
-    Name : SSSS, Date of Birth : DDDD, Time of Birth : HH:MM:SS, Place of Birth : City, State, Country
-    Rashi : XXX
-    Ascendant : YYY
-    Persoanlity : 10-15 lines highlighting personality 
-    Career : 3-4 lines
-    Wealth : 5-6 lines
-    Relationship : 5-6 lines of relationship with Parents, Siblings, Children and friends
-    Marriage : 4-5 lines about marital life and tendency
-    Health : 3-4 lines about health
-    Planetary effects : 3-4 lines about impact of each planet on life of the person.
+    personality impact with strengths/weaknesses, career, wealth, marriage, health, relationships  in the report. 
     """
 
     headers = {
