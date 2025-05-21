@@ -238,10 +238,15 @@ def submit():
         "max_tokens": 2048,
         "temperature": 0.4
     }
-
+    
     response = requests.post("https://api.together.xyz/v1/completions", headers=headers, json=data, timeout=240)
     if response.status_code == 200:
         kundali_text = response.json()['choices'][0]['text'].strip()
+        word_count = len(kundali_text)
+        while word_count <= 100:
+           response = requests.post("https://api.together.xyz/v1/completions", headers=headers, json=data, timeout=240)
+           kundali_text = response.json()['choices'][0]['text'].strip()
+           word_count = len(kundali_text)
         return render_template('kundali.html', kundali=kundali_text)
     else:
         return f"Error: {response.text}"
