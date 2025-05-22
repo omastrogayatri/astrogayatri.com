@@ -210,7 +210,7 @@ def submit():
 
     #Together AI call
     TOGETHER_API_KEY = "tgp_v1_xekeicYc2vvaUxUnpuWODX3q1LLMf-x4MCO5HYY6mmc"
-    TOGETHER_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"  # You can change model
+    TOGETHER_MODEL = "mistralai/Mistral-7B-Instruct-v0.3"  # You can change model
  
     
 
