@@ -242,11 +242,11 @@ def submit():
     response = requests.post("https://api.together.xyz/v1/completions", headers=headers, json=data, timeout=240)
     if response.status_code == 200:
         kundali_text = response.json()['choices'][0]['text'].strip()
-        word_count = len(kundali_text)
-        while word_count <= 1000:
+        word_count = sum(c.isalpha() for c in kundali_text)
+        while word_count <= 150:
            response = requests.post("https://api.together.xyz/v1/completions", headers=headers, json=data, timeout=240)
            kundali_text = response.json()['choices'][0]['text'].strip()
-           word_count = len(kundali_text)
+           word_count = sum(c.isalpha() for c in kundali_text)
         print(kundali_text)
         return render_template('kundali.html', kundali=kundali_text)
     else:
