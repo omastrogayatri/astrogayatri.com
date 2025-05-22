@@ -247,6 +247,7 @@ def submit():
            response = requests.post("https://api.together.xyz/v1/completions", headers=headers, json=data, timeout=240)
            kundali_text = response.json()['choices'][0]['text'].strip()
            word_count = len(kundali_text)
+        print(kundali_text)
         return render_template('kundali.html', kundali=kundali_text)
     else:
         return f"Error: {response.text}"
