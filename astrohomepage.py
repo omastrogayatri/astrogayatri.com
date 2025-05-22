@@ -209,7 +209,7 @@ def submit():
       print(f"  {sub_key}: {sub_value}")
 
     #Together AI call
-    TOGETHER_API_KEY = "tgp_v1_xekeicYc2vvaUxUnpuWODX3q1LLMf-x4MCO5HYY6mmc"
+    TOGETHER_API_KEY = "tgp_v1_CuuIqszXEvcAD0jNBncKPXDgyKEpcqlEC2xf4utHL2U"
     TOGETHER_MODEL = "mistralai/Mistral-7B-Instruct-v0.3"  # You can change model
  
     
